@@ -10,9 +10,18 @@ import java.util.stream.Collectors;
 public class TransactionService {
 
     private List<Transaction> transacoes;
+    private PersistenceService persistence;
 
     public TransactionService() {
-        this.transacoes = new ArrayList<>();
+        this.persistence = new PersistenceService("data/transactions.json");
+        
+	    // Carrega transações do JSON ao iniciar
+        this.transacoes = persistence.load();
+
+        // garantir que a lista não seja nula
+        if (this.transacoes == null) {
+            this.transacoes = new ArrayList<>();
+        }
     }
 
     public void setTransactions(List<Transaction> list) {
@@ -25,6 +34,7 @@ public class TransactionService {
 
     public void addTransaction(Transaction transacao) {
         transacoes.add(transacao);
+        persistence.save(transacoes);
     }
 
     public void updateTransaction(Transaction updated) {
@@ -34,10 +44,12 @@ public class TransactionService {
                 break;
             }
         }
+        persistence.save(transacoes);
     }
 
     public void removeTransaction(String id) {
     	transacoes.removeIf(t -> t.getId().equals(id));
+    	persistence.save(transacoes);
     }
 
     public List<Transaction> filterByMonth(YearMonth mes) {
