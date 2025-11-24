@@ -1,4 +1,4 @@
-package finetrack.model;
+package ufrn.finetrack.model;
 
 public enum ExpenseCategory {
     COMIDA,

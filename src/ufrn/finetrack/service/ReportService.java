@@ -1,6 +1,10 @@
-package finetrack.service;
+package ufrn.finetrack.service;
 
-import finetrack.model.*;
+import ufrn.finetrack.model.*;
+import ufrn.finetrack.model.ReportData;
+import ufrn.finetrack.model.Transaction;
+import ufrn.finetrack.model.TransactionType;
+
 import java.time.YearMonth;
 import java.util.*;
 import java.util.stream.Collectors;
@@ -21,8 +25,10 @@ public class ReportService {
 
         Map<String, Double> gastosPorCategoria = calcularGastosPorCategoria(transacoesDoMes);
         Map<YearMonth, Double> saldoMensal = calcularEvolucaoMensal();
+        Map<YearMonth, Double> receitaMensal = calcularReceitaMensal();
+        Map<YearMonth, Double> despesaMensal = calcularDespesaMensal();
 
-        return new ReportData(gastosPorCategoria, saldoMensal);
+        return new ReportData(gastosPorCategoria, saldoMensal, receitaMensal, despesaMensal);
     }
 
     //Calcula o total gasto por categoria de despesa.
@@ -58,6 +64,57 @@ public class ReportService {
         }
 
         return saldoPorMes;
+    }
+    
+  //Calcula a receita acumulada  para todos os meses existentes no sistema.
+    public Map<YearMonth, Double> calcularReceitaMensal(){
+    	
+    	List<Transaction> todasTransacoes = transactionService.getAll();
+    	
+    	Map<YearMonth, Double> receitaPorMes = new TreeMap<>();
+    	
+    	for(Transaction t :todasTransacoes) {
+    		
+    		if (t.getTipo() == TransactionType.RECEITA) {
+    			
+    			YearMonth mes = YearMonth.from(t.getData());
+        		
+        		receitaPorMes.putIfAbsent(mes, 0.0);
+        		
+        		double valorAtual = receitaPorMes.get(mes);
+        		
+    			receitaPorMes.put(mes, valorAtual + t.getValor());
+            }
+    		 
+    	}
+    	
+    	return receitaPorMes;
+    }
+    
+  //Calcula a despesa acumulada para todos os meses existentes no sistema.
+    
+    public Map<YearMonth, Double> calcularDespesaMensal(){
+    	
+    	List<Transaction> todasTransacoes = transactionService.getAll();
+    	
+    	Map<YearMonth, Double> despesaPorMes = new TreeMap<>();
+    	
+    	for(Transaction t :todasTransacoes) {
+    		
+    		if (t.getTipo() == TransactionType.DESPESA) {
+    			
+    			YearMonth mes = YearMonth.from(t.getData());
+        		
+        		despesaPorMes.putIfAbsent(mes, 0.0);
+        		
+        		double valorAtual = despesaPorMes.get(mes);
+        		
+    			despesaPorMes.put(mes, valorAtual + t.getValor());
+            }
+    		 
+    	}
+    	
+    	return despesaPorMes;
     }
 
     // Exporta texto simples com o resumo do mês.

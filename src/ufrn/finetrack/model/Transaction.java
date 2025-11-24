@@ -1,4 +1,4 @@
-package finetrack.model;
+package ufrn.finetrack.model;
 
 import java.time.LocalDate;
 import java.util.UUID; // para geração de uids aleátorios em cada nova transação cadastrada

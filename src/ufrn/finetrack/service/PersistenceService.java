@@ -1,9 +1,10 @@
-package finetrack.service;
+package ufrn.finetrack.service;
 
-import finetrack.model.Transaction;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
+
+import ufrn.finetrack.model.Transaction;
 
 import java.io.IOException;
 import java.lang.reflect.Type;

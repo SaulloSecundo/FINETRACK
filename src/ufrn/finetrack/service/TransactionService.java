@@ -1,7 +1,8 @@
-package finetrack.service;
+package ufrn.finetrack.service;
 
-import finetrack.model.Transaction;
-import finetrack.model.TransactionType;
+import ufrn.finetrack.model.Transaction;
+import ufrn.finetrack.model.TransactionType;
+
 import java.time.YearMonth;
 import java.util.ArrayList;
 import java.util.List;
