@@ -75,3 +75,35 @@
     -fx-min-height: 22;
 }
 
+/* Botões de ação */
+.action-button {
+    -fx-background-color: #B9F3EC;
+    -fx-text-fill: #003F42;
+    -fx-font-weight: bold;
+    -fx-background-radius: 20;
+    -fx-padding: 8 20;
+}
+
+.action-button-danger {
+    -fx-background-color: #FF7B7B;
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+    -fx-background-radius: 20;
+    -fx-padding: 8 20;
+}
+
+/* Menu selecionado */
+.menu-button-selected {
+    -fx-background-color: transparent;
+    -fx-text-fill: white;
+    -fx-font-size: 18px;
+    -fx-font-weight: bold;
+    -fx-underline: true;
+}
+
+/* Tabela */
+.transactions-table {
+    -fx-background-color: #B9F3EC;
+    -fx-background-radius: 20;
+}
+

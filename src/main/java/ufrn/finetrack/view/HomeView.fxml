@@ -62,9 +62,9 @@
 
                         <HBox alignment="CENTER" spacing="20">
                             <children>
-                                <Label text="Alimentos" styleClass="legend-item"/>
-                                <Label text="Transporte" styleClass="legend-item"/>
-                                <Label text="Contas fixas" styleClass="legend-item"/>
+                                <Label text=" " styleClass="legend-item"/>
+                                <Label text=" " styleClass="legend-item"/>
+                                <Label text=" " styleClass="legend-item"/>
                             </children>
                         </HBox>
 

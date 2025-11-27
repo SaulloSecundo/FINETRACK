@@ -9,7 +9,7 @@ public class App extends Application {
 
     @Override
     public void start(Stage stage) throws Exception {
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("/ufrn/finetrack/view/HomeView.fxml"));
+    	FXMLLoader loader = new FXMLLoader(getClass().getResource("/ufrn/finetrack/view/TransactionsView.fxml"));
         Scene scene = new Scene(loader.load(), 1280, 720);
 
         scene.getStylesheets().add(
