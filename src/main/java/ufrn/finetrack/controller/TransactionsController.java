@@ -25,6 +25,8 @@ public class TransactionsController {
     @FXML private DatePicker dateData;
 
     private TransactionService service = new TransactionService();
+    
+    private Transaction transacaoEdicaoOuRemocao = null;
 
     @FXML
     public void initialize() {
@@ -48,14 +50,32 @@ public class TransactionsController {
         choiceTipo.getSelectionModel().selectedItemProperty().addListener((obs, oldVal, novoTipo) -> {
             atualizarCategorias(novoTipo);
         });
+        
     }
 
     private void loadTable() {
         tableTransacoes.getItems().setAll(service.getAll());
+        
+     // quando selecionar um item da table, preenche os campos e marca para edição ou remoção
+        tableTransacoes.getSelectionModel().selectedItemProperty().addListener((obs, oldVal, novo) -> {
+            if (novo != null) {
+                transacaoEdicaoOuRemocao = novo;
+
+                choiceTipo.setValue(novo.getTipo());
+                choiceCategoria.setValue(novo.getCategoria());
+                txtValor.setText(String.valueOf(novo.getValor()));
+                dateData.setValue(novo.getData());
+            }
+        });
     }
 
     @FXML
     private void handleAdd() {
+    	
+    	if (transacaoEdicaoOuRemocao != null) {
+            showAlert("Você selecionou uma transação da tabela. Use os botões EDITAR ou REMOVER para continuar a operação");
+            return;
+        }
 
         try {
             // validação dos campos do formulário
@@ -118,13 +138,83 @@ public class TransactionsController {
 
     @FXML
     private void handleEdit() {
-        // implementar
+
+        if (transacaoEdicaoOuRemocao == null) {
+            showAlert("Selecione uma transação na tabela para editar.");
+            return;
+        }
+
+        try {
+            // Valida o formulário
+            if (choiceTipo.getValue() == null ||
+                choiceCategoria.getValue() == null ||
+                txtValor.getText().isBlank() ||
+                dateData.getValue() == null) {
+
+                showAlert("Preencha todos os campos antes de editar.");
+                return;
+            }
+
+            double novoValor;
+            try {
+                novoValor = Double.parseDouble(txtValor.getText());
+            } catch (NumberFormatException e) {
+                showAlert("Valor inválido. Use apenas números.");
+                return;
+            }
+
+            // Atualiza os campos da transação mantida no json
+            transacaoEdicaoOuRemocao.setTipo(choiceTipo.getValue());
+            transacaoEdicaoOuRemocao.setCategoria(choiceCategoria.getValue());
+            transacaoEdicaoOuRemocao.setValor(novoValor);
+            transacaoEdicaoOuRemocao.setData(dateData.getValue());
+
+            // Salva via service (vai atualizar e persistir)
+            service.updateTransaction(transacaoEdicaoOuRemocao);
+
+            // Recarrega a tabela
+            tableTransacoes.getItems().setAll(service.getAll());
+            
+         // limpar campos
+
+            limparCampos();
+
+            showAlert("Transação atualizada com sucesso!", Alert.AlertType.INFORMATION);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            showAlert("Erro ao editar transação.");
+        }
     }
+
 
     @FXML
     private void handleRemove() {
-        // implementar
+
+        if (transacaoEdicaoOuRemocao == null) {
+            showAlert("Selecione uma transação na tabela para remover.");
+            return;
+        }
+
+        if (!confirmar("Deseja realmente remover esta transação?")) {
+            return;
+        }
+
+        try {
+            service.removeTransaction(transacaoEdicaoOuRemocao.getId());
+
+            tableTransacoes.getItems().setAll(service.getAll());
+
+            limparCampos();
+
+            showAlert("Transação removida com sucesso!", Alert.AlertType.INFORMATION);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            showAlert("Erro ao remover transação.");
+        }
     }
+
 
     @FXML
     private void goToHome() {
@@ -163,6 +253,24 @@ public class TransactionsController {
         alert.setHeaderText(null);
         alert.setContentText(msg);
         alert.showAndWait();
+    }
+    
+    private boolean confirmar(String msg) {
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        alert.setTitle("Confirmação");
+        alert.setHeaderText(null);
+        alert.setContentText(msg);
+
+        return alert.showAndWait().filter(btn -> btn == ButtonType.OK).isPresent();
+    }
+    
+    private void limparCampos() {
+        choiceTipo.setValue(null);
+        choiceCategoria.setValue(null);
+        txtValor.clear();
+        dateData.setValue(null);
+
+        transacaoEdicaoOuRemocao = null; //volta ao modo "Adicionar"
     }
     
     private void atualizarCategorias(TransactionType tipo) {

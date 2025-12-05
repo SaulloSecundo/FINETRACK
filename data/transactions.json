@@ -1,16 +1,9 @@
 [
   {
-    "id": "4d812b5a-110a-4e17-9780-4e0f0951cf64",
-    "tipo": "RECEITA",
-    "categoria": "BOLSA",
-    "valor": 700.0,
-    "data": "2025-12-01"
-  },
-  {
-    "id": "3ccc2ad7-0350-4a8e-84d0-e1e2bd0579c2",
+    "id": "6fed8e41-03d1-452e-bf6a-a89b1044537c",
     "tipo": "DESPESA",
-    "categoria": "COMIDA",
-    "valor": 50.0,
-    "data": "2025-12-12"
+    "categoria": "CONTAS",
+    "valor": 124.0,
+    "data": "2025-12-06"
   }
 ]
