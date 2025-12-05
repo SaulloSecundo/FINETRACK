@@ -7,21 +7,19 @@ public class Transaction {
 	private String id;
     private TransactionType tipo;
     private String categoria;  // valor derivado dos enums
-    private String descricao;
     private double valor;
     private LocalDate data;
     
-    public Transaction(TransactionType tipo, String categoria, String descricao, double valor, LocalDate data) {
+    public Transaction(TransactionType tipo, String categoria, double valor, LocalDate data) {
         this.id = UUID.randomUUID().toString();
         this.tipo = tipo;
         this.categoria = categoria;
-        this.descricao = descricao;
         this.valor = valor;
         this.data = data;
     }
     
     // Construtor vazio (necessário para jSON)
-    public Transaction() {}
+    //public Transaction() {}
 
     // metodos getters e setters 
 	public TransactionType getTipo() {
@@ -30,10 +28,6 @@ public class Transaction {
 	
 	public String getCategoria() {
 		return categoria;
-	}
-	
-	public String getDescricao() {
-		return descricao;
 	}
 	
 	public double getValor() {
@@ -54,10 +48,6 @@ public class Transaction {
 
 	public void setCategoria(String categoria) {
 		this.categoria = categoria;
-	}
-
-	public void setDescricao(String descricao) {
-		this.descricao = descricao;
 	}
 
 	public void setValor(double valor) {

@@ -83,7 +83,7 @@
                     <!-- Tipo -->
                     <VBox spacing="5">
                         <children>
-                            <Label text="TIPO" styleClass="card-title"/>
+                            <Label text="TIPO" styleClass="card-title-2"/>
                             <ChoiceBox fx:id="choiceTipo" prefWidth="250"/>
                         </children>
                     </VBox>
@@ -91,7 +91,7 @@
                     <!-- Categoria -->
                     <VBox spacing="5">
                         <children>
-                            <Label text="CATEGORIA" styleClass="card-title"/>
+                            <Label text="CATEGORIA" styleClass="card-title-2"/>
                             <ChoiceBox fx:id="choiceCategoria" prefWidth="250"/>
                         </children>
                     </VBox>
@@ -99,7 +99,7 @@
                     <!-- Valor -->
                     <VBox spacing="5">
                         <children>
-                            <Label text="VALOR" styleClass="card-title"/>
+                            <Label text="VALOR" styleClass="card-title-2"/>
                             <TextField fx:id="txtValor" styleClass="info-field"/>
                         </children>
                     </VBox>
@@ -107,7 +107,7 @@
                     <!-- Data -->
                     <VBox spacing="5">
                         <children>
-                            <Label text="DATA" styleClass="card-title"/>
+                            <Label text="DATA" styleClass="card-title-2"/>
                             <DatePicker fx:id="dateData" prefWidth="250"/>
                         </children>
                     </VBox>

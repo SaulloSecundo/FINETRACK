@@ -14,7 +14,7 @@
         <HBox spacing="40" styleClass="top-menu">
             <children>
                 <Label text="FineTrack" styleClass="logo"/>
-                <Button text="Transações" styleClass="menu-button"/>
+                <Button text="Transações" styleClass="menu-button" onAction="#goToTransactions"/>
                 <Button text="Relatórios" styleClass="menu-button"/>
             </children>
             <padding><Insets top="20" left="40" bottom="20" right="0"/></padding>
@@ -31,19 +31,19 @@
                 <VBox spacing="20" styleClass="card" prefWidth="450">
                     <children>
 
-                        <Label styleClass="card-title" text="Receitas totais do mês"/>
+                        <Label styleClass="card-title-2" text="Receitas totais do mês"/>
 						<Label fx:id="lblTotalReceitas" styleClass="value-label" text="R$ 0,00"/>
 
-						<Label styleClass="card-title" text="Despesas totais do mês"/>
+						<Label styleClass="card-title-2" text="Despesas totais do mês"/>
 						<Label fx:id="lblTotalDespesas" styleClass="value-label" text="R$ 0,00"/>
 						
-						<Label styleClass="card-title" text="Fluxo líquido"/>
+						<Label styleClass="card-title-2" text="Fluxo líquido"/>
 						<Label fx:id="lblFluxoLiquido" styleClass="value-label" text="R$ 0,00"/>
 
 
                         <HBox spacing="15" alignment="CENTER_LEFT">
                             <children>
-                                <Label text="Situação financeira" styleClass="card-title"/>
+                                <Label text="Situação financeira" styleClass="card-title-2"/>
                                 <ToggleButton fx:id="toggleSituacao" styleClass="toggle-switch"/>
                             </children>
                         </HBox>

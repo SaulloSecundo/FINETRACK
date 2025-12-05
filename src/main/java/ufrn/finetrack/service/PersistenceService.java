@@ -10,6 +10,7 @@ import java.io.IOException;
 import java.lang.reflect.Type;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -22,10 +23,12 @@ public class PersistenceService {
         this.filePath = Path.of(fileLocation);
 
         this.gson = new GsonBuilder()
-                .setPrettyPrinting()   
+                .registerTypeAdapter(LocalDate.class, new LocalDateAdapter())
+                .setPrettyPrinting()
                 .create();
     }
-
+    
+    
     //Carrega o arquivo JSON e converte para lista de Transaction.
   
     public List<Transaction> load() {

@@ -32,6 +32,11 @@
 }
 
 .card-title {
+    -fx-text-fill: #003F42;
+    -fx-font-size: 16px;
+}
+
+.card-title-2 {
     -fx-text-fill: white;
     -fx-font-size: 16px;
 }
@@ -81,7 +86,7 @@
     -fx-text-fill: #003F42;
     -fx-font-weight: bold;
     -fx-background-radius: 20;
-    -fx-padding: 8 20;
+    -fx-padding: 8 10;
 }
 
 .action-button-danger {
@@ -95,7 +100,7 @@
 /* Menu selecionado */
 .menu-button-selected {
     -fx-background-color: transparent;
-    -fx-text-fill: white;
+    -fx-text-fill: #003F42;
     -fx-font-size: 18px;
     -fx-font-weight: bold;
     -fx-underline: true;
