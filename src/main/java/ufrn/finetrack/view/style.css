@@ -80,6 +80,16 @@
     -fx-min-height: 22;
 }
 
+.switch-verde {
+    -fx-background-color: #14D9A4; /* verde */
+    -fx-background-radius: 15;
+}
+
+.switch-vermelho {
+    -fx-background-color: #E65454; /* vermelho */
+    -fx-background-radius: 15;
+}
+
 /* Botões de ação */
 .action-button {
     -fx-background-color: #B9F3EC;
@@ -112,3 +122,12 @@
     -fx-background-radius: 20;
 }
 
+.export-button {
+    -fx-background-color: transparent;
+    -fx-text-fill: #003f46;
+    -fx-font-size: 36px;
+    -fx-cursor: hand;
+}
+.export-button:hover {
+    -fx-opacity: 0.7;
+}

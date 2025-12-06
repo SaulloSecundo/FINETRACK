@@ -15,7 +15,7 @@
             <children>
                 <Label text="FineTrack" styleClass="logo"/>
                 <Button text="Transações" styleClass="menu-button" onAction="#goToTransactions"/>
-                <Button text="Relatórios" styleClass="menu-button"/>
+                <Button text="Relatórios" styleClass="menu-button" onAction="#goToReports"/>
             </children>
             <padding><Insets top="20" left="40" bottom="20" right="0"/></padding>
         </HBox>

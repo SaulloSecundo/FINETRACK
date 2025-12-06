@@ -3,26 +3,35 @@ package ufrn.finetrack.service;
 import ufrn.finetrack.model.Transaction;
 import ufrn.finetrack.model.TransactionType;
 
+import java.time.LocalDate;
 import java.time.YearMonth;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
 public class TransactionService {
+	
+	private static TransactionService instance;
+	
+	public static TransactionService getInstance() {
+        if (instance == null) {
+            instance = new TransactionService();
+        }
+        return instance;
+    }
 
     private List<Transaction> transacoes;
     private PersistenceService persistence;
 
-    public TransactionService() {
+    private TransactionService() {
+        
+    	this.transacoes = new ArrayList<>();
         this.persistence = new PersistenceService("data/transactions.json");
         
 	    // Carrega transações do JSON ao iniciar
-        this.transacoes = persistence.load();
+        List<Transaction> carregadas = persistence.load();
+        if (carregadas != null) transacoes.addAll(carregadas);
 
-        // garantir que a lista não seja nula
-        if (this.transacoes == null) {
-            this.transacoes = new ArrayList<>();
-        }
     }
 
     public void setTransactions(List<Transaction> list) {
@@ -64,5 +73,16 @@ public class TransactionService {
                 .filter(t -> t.getTipo() == tipo)
                 .mapToDouble(Transaction::getValor)
                 .sum();
+    }
+    
+    public List<Transaction> getTransactionsOfCurrentMonth() {
+        LocalDate hoje = LocalDate.now();
+        int mes = hoje.getMonthValue();
+        int ano = hoje.getYear();
+
+        return transacoes.stream()
+                .filter(t -> t.getData().getMonthValue() == mes &&
+                             t.getData().getYear() == ano)
+                .toList();
     }
 }

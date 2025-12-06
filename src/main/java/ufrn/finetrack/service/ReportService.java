@@ -17,7 +17,7 @@ public class ReportService {
         this.transactionService = transactionService;
     }
 
-    //Gera relatório completo para um mês específico.
+    //Gera dados refentes aos meses que tiveram alguma movimentação.
     
     public ReportData generateMonthlyReport(YearMonth month) {
         List<Transaction> transacoesDoMes = transactionService

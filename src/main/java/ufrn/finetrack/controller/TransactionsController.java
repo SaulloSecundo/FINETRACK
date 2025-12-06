@@ -1,6 +1,8 @@
 package ufrn.finetrack.controller;
 
+import java.time.YearMonth;
 import java.util.Arrays;
+import java.util.List;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -24,7 +26,7 @@ public class TransactionsController {
     @FXML private TextField txtValor;
     @FXML private DatePicker dateData;
 
-    private TransactionService service = new TransactionService();
+    private final TransactionService service = TransactionService.getInstance();
     
     private Transaction transacaoEdicaoOuRemocao = null;
 
@@ -37,11 +39,17 @@ public class TransactionsController {
     private void loadChoices() {
     	
     	ObservableList<String> listaOrdenacao = FXCollections.observableArrayList(
-                "Mês", 
-                "Tipo"
+    			"Todos",
+    		    "Por Mês",
+    		    "Por Tipo"
          );
-            
-        choiceOrdenar.setItems(listaOrdenacao);
+    	
+    	// opções do filtro
+        choiceOrdenar.getItems().setAll(listaOrdenacao);
+        choiceOrdenar.setValue("Todos");
+
+        // listener para mudanças no filtro
+        choiceOrdenar.valueProperty().addListener((obs, oldVal, newVal) -> aplicarFiltro());
         
      // Preencher tipos no ChoiceBox
         choiceTipo.getItems().setAll(TransactionType.values());
@@ -54,6 +62,7 @@ public class TransactionsController {
     }
 
     private void loadTable() {
+    	
         tableTransacoes.getItems().setAll(service.getAll());
         
      // quando selecionar um item da table, preenche os campos e marca para edição ou remoção
@@ -69,6 +78,7 @@ public class TransactionsController {
         });
     }
 
+    //implementação dos métodos dos botões
     @FXML
     private void handleAdd() {
     	
@@ -126,7 +136,9 @@ public class TransactionsController {
             choiceCategoria.setValue(null);
             txtValor.clear();
             dateData.setValue(null);
-
+            
+            aplicarFiltro();
+            
             showAlert("Transação adicionada com sucesso!", Alert.AlertType.INFORMATION);
 
         } catch (Exception e) {
@@ -178,6 +190,7 @@ public class TransactionsController {
          // limpar campos
 
             limparCampos();
+            aplicarFiltro();
 
             showAlert("Transação atualizada com sucesso!", Alert.AlertType.INFORMATION);
 
@@ -206,7 +219,7 @@ public class TransactionsController {
             tableTransacoes.getItems().setAll(service.getAll());
 
             limparCampos();
-
+            aplicarFiltro();
             showAlert("Transação removida com sucesso!", Alert.AlertType.INFORMATION);
 
         } catch (Exception e) {
@@ -215,7 +228,7 @@ public class TransactionsController {
         }
     }
 
-
+    //navegação entre telas 
     @FXML
     private void goToHome() {
         try {
@@ -236,12 +249,31 @@ public class TransactionsController {
             e.printStackTrace();
         }
     }
-
+    
+  //navegação entre telas 
     @FXML
     private void goToReports() {
-        // navegação
+        try {
+            FXMLLoader loader = new FXMLLoader(
+                getClass().getResource("/ufrn/finetrack/view/ReportsView.fxml")
+            );
+
+            Scene scene = new Scene(loader.load(), 1280, 720);
+            Stage stage = (Stage) tableTransacoes.getScene().getWindow();
+
+            scene.getStylesheets().add(
+                getClass().getResource("/ufrn/finetrack/view/style.css").toExternalForm()
+            );
+
+            stage.setScene(scene);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
     
+    
+    // métodos auxiliares
     
     private void showAlert(String msg) {
         showAlert(msg, Alert.AlertType.WARNING);
@@ -270,8 +302,12 @@ public class TransactionsController {
         txtValor.clear();
         dateData.setValue(null);
 
-        transacaoEdicaoOuRemocao = null; //volta ao modo "Adicionar"
+        transacaoEdicaoOuRemocao = null;
+
+        // remove seleção da tabela para não repopular os campos
+        tableTransacoes.getSelectionModel().clearSelection();
     }
+
     
     private void atualizarCategorias(TransactionType tipo) {
         if (tipo == null) return;
@@ -294,5 +330,43 @@ public class TransactionsController {
                 break;
         }
     }
+    
+    private void aplicarFiltro() {
+        String filtro = choiceOrdenar.getValue();
+        List<Transaction> lista = service.getAll();
+
+        switch (filtro) {
+
+            case "Por Mês":
+                ordenarPorMes(lista);
+                break;
+
+            case "Por Tipo":
+                ordenarPorTipo(lista);
+                break;
+
+            case "Todos":
+            default:
+                break;
+        }
+
+        tableTransacoes.getItems().setAll(lista);
+    }
+    
+    private void ordenarPorMes(List<Transaction> lista) {
+
+        lista.sort((t1, t2) -> {
+            YearMonth m1 = YearMonth.from(t1.getData());
+            YearMonth m2 = YearMonth.from(t2.getData());
+            return m2.compareTo(m1); // mais recente primeiro
+        });
+    }
+    
+    private void ordenarPorTipo(List<Transaction> lista) {
+
+        lista.sort((t1, t2) -> t1.getTipo().compareTo(t2.getTipo()));
+    }
 }
+
+
 
